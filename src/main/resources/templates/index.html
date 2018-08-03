@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+
+<div style="text-align: center;">
+    <ul id="messages">
+        <!--tu beda wiadomosci innych userow-->
+        <li>test</li>
+    </ul>
+         <br/>
+        <br/>
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+
+    <form onsubmit="sendMessage(); return false;">
+        <input type="text" id="writer" placeholder="Podaj wiadomość">
+    </form>
+</div>
+
+<script>
+        var link = "ws://localhost:8080/chat";
+        var webSocket = new WebSocket(link);
+        var writer = document.getElementById("writer");
+        var messages = document.getElementById("messages");
+
+        webSocket.onopen = function (ws) {
+             Console.logo("Podłączono");
+        };
+
+        webSocket.onmessage = function (ev){
+              messages.innerHTML = messages.innerHTML + '<li>' + ev.data + '</li>';
+        };
+
+        function sendMessage(){
+            var text = writer.value;
+            writer.value="";
+
+            webSocket.send(text);
+        };
+    </script>
+</body>
+</html>
